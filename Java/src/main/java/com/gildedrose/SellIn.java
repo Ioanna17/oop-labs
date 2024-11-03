@@ -18,4 +18,9 @@ public class SellIn {
     public boolean isExpired() {
         return value < 0;
     }
+
+    public boolean isLessThan(int days) {
+        return value < days;
+    }
+
 }
