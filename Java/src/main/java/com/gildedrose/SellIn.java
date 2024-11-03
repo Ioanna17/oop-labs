@@ -7,10 +7,6 @@ public class SellIn {
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public void decrease() {
         value--;
     }
