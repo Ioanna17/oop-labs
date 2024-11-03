@@ -11,4 +11,10 @@ public class Quality {
     public int getValue() {
         return value;
     }
+
+    public void increase() {
+        if (value < MAX_QUALITY) {
+            value++;
+        }
+    }
 }
