@@ -22,7 +22,8 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            ItemUpdater updater = itemUpdaters.getOrDefault(item.name, itemUpdaters.get("default"));
+            ItemUpdater defaultUpdater = itemUpdaters.get("default");
+            ItemUpdater updater = itemUpdaters.getOrDefault(item.name, defaultUpdater);
             updater.update(item);
         }
     }

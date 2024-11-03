@@ -2,7 +2,7 @@ package com.gildedrose;
 
 public class Quality {
     private int value;
-    private static final int MAX_QUALITY = 50;
+    private static final int MAX_QUALITY = 80;
     private static final int MIN_QUALITY = 0;
 
     public Quality(int value) {
