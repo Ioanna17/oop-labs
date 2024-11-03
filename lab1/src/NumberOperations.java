@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.math.BigDecimal;
@@ -16,7 +17,7 @@ public class NumberOperations {
         numbers.add(80.1);
         numbers.add(90);
         numbers.add(100.9);
-        numbers.add(new BigDecimal("123.6"));
+        numbers.add(new BigDecimal("123.66666666666666666666"));
 
         System.out.println("Оригінальні числа:");
         for (Number num : numbers) {
@@ -52,6 +53,7 @@ public class NumberOperations {
         List<Double> doubles = new ArrayList<Double>();
         List<Float> floats = new ArrayList<Float>();
         List<Long> longs = new ArrayList<Long>();
+        List<BigDecimal> big = new ArrayList<>();
 
         for (Number num : numbers) {
             if (num instanceof Integer) {
@@ -62,6 +64,8 @@ public class NumberOperations {
                 floats.add((Float) num);
             } else if (num instanceof Long) {
                 longs.add((Long) num);
+            } else if (num instanceof BigDecimal){
+                big.add((BigDecimal) num);
             }
         }
 
@@ -70,7 +74,7 @@ public class NumberOperations {
         System.out.println("Doubles: " + doubles);
         System.out.println("Floats: " + floats);
         System.out.println("Longs: " + longs);
-
+        System.out.println("BigDecimal: " + big);
         Number max = numbers.get(0);
         for (Number num : numbers) {
             if (num.doubleValue() > max.doubleValue()) {
@@ -78,6 +82,20 @@ public class NumberOperations {
             }
         }
         System.out.println("\nНайбільше число: " + max);
+
+        Number i = numbers.get(0);
+        Number j = numbers.get(numbers.size()-1);
+
+        BigDecimal first = new BigDecimal(i.toString());
+        BigDecimal last = new BigDecimal(j.toString());
+
+        BigDecimal res = first.divide(last, 10, RoundingMode.HALF_UP);
+        System.out.println("ділення" + res);
+        System.out.println("ділення" + i);
+        System.out.println("ділення" + j);
+        System.out.println("ділення" + first);
+        System.out.println("ділення" + last);
+
 
         System.out.println("\nДемонстрація BigDecimal:");
         BigDecimal bd1 = new BigDecimal("0.1");

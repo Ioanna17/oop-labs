@@ -110,13 +110,25 @@
 //        setTitle("Малюнки");
 //        setSize(960, 960);
 //        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setFocusable(true);
 //
-//        shapes = new Shape[] {
-//                new Circle(480, 480, 100, Color.GREEN),
-//                new Square(200, 200, 200, Color.RED),
-//                new Triangle(new int[]{500, 600, 700}, new int[]{600, 500, 600}, Color.ORANGE)
+////        shapes = new Shape[] {
+////                new Circle(480, 480, 100, Color.GREEN),
+////                new Square(200, 200, 200, Color.RED),
+////                new Triangle(new int[]{500, 600, 700}, new int[]{600, 500, 600}, Color.ORANGE)
+////        };
+//
+//        shapes = new Shape[]{
+////                new Circle(200, 300, 317, Color.BLUE),
+//                new Triangle(new int[]{100, 1000, 500}, new int[]{0, 0, 200}, Color.ORANGE),
+//
 //        };
 //
+////        shapes = new Shape[]{
+////                new Circle(200, 300, 300, Color.BLUE),
+////                new Triangle(new int[]{500, 50, 50}, new int[]{300, 559,81, 40,19}, Color.ORANGE)
+////        };
+////
 //        addKeyListener(new KeyAdapter() {
 //            @Override
 //            public void keyPressed(KeyEvent e) {
@@ -155,10 +167,36 @@
 //    public void paint(Graphics g) {
 //        super.paint(g);
 //
+//        // Малюємо сітку
+//        drawGrid(g);
+//
+//        // Малюємо фігури
 //        for (Shape shape : shapes) {
 //            shape.draw(g);
 //        }
 //    }
+//
+//    private void drawGrid(Graphics g) {
+//        g.setColor(Color.LIGHT_GRAY);
+//        int step = 50;
+//
+//        for (int i = 0; i < getWidth(); i += step) {
+//            g.drawLine(i, 0, i, getHeight());
+//        }
+//
+//        for (int i = 0; i < getHeight(); i += step) {
+//            g.drawLine(0, i, getWidth(), i);
+//        }
+//
+//        int centerX = (getWidth() / step / 2) * step;
+//        int centerY = (getHeight() / step / 2) * step;
+//
+//        g.setColor(Color.BLACK);
+//        g.drawLine(0, centerY, getWidth(), centerY);
+//        g.drawLine(centerX, 0, centerX, getHeight());
+//    }
+//
+//
 //
 //    public static void main(String[] args) {
 //        Lab t = new Lab();

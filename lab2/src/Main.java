@@ -27,30 +27,26 @@ class Circle extends Shape {
 
     @Override
     public void draw() {
-        int graphHeight = 40;  // Можна змінити за потребою
-        int graphWidth = 80;   // Можна змінити за потребою
+        int graphHeight = 40;
+        int graphWidth = 80;
         int aspectedGraphHeight = graphHeight / 2;
 
-        // Ініціалізація графічного поля
         for (int row = 0; row <= aspectedGraphHeight; row++) {
             for (int column = 0; column <= graphWidth; column++) {
                 circle[row][column] = ' ';
             }
         }
 
-        // Горизонтальна вісь
         for (int column = 0; column <= graphWidth; column++) {
             int row = aspectedGraphHeight / 2;
             circle[row][column] = '-';
         }
 
-        // Вертикальна вісь
         for (int row = 0; row <= aspectedGraphHeight; row++) {
             int column = graphWidth / 2;
             circle[row][column] = '|';
         }
 
-        // Малювання кола
         for (int angle = 0; angle <= 360; angle++) {
             int circleX = (int) (radius * Math.cos(Math.toRadians(angle)));
             int circleY = (int) (radius * Math.sin(Math.toRadians(angle)));
@@ -63,7 +59,6 @@ class Circle extends Shape {
             }
         }
 
-        // Виведення кола
         for (int row = 0; row <= aspectedGraphHeight; row++) {
             for (int column = 0; column <= graphWidth; column++) {
                 System.out.print(circle[row][column]);
