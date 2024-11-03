@@ -3,6 +3,7 @@ package com.gildedrose;
 public class Quality {
     private int value;
     private static final int MAX_QUALITY = 50;
+    private static final int MIN_QUALITY = 0;
 
     public Quality(int value) {
         this.value = Math.min(value, MAX_QUALITY);
@@ -17,4 +18,11 @@ public class Quality {
             value++;
         }
     }
+
+    public void decrease() {
+        if (value > MIN_QUALITY) {
+            value--;
+        }
+    }
+
 }
