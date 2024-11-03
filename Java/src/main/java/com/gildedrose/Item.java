@@ -1,12 +1,12 @@
 package com.gildedrose;
 
 public class Item {
-    public String name;
+    public Name name;
     public SellIn sellIn;
     public Quality quality;
 
     public Item(String name, int sellIn, int quality) {
-        this.name = name;
+        this.name = new Name(name);
         this.sellIn = new SellIn(sellIn);
         this.quality = new Quality(quality);
     }
