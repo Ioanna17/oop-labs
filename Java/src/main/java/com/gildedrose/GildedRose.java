@@ -1,73 +1,78 @@
 package com.gildedrose;
 
+import java.util.HashMap;
+import java.util.Map;
+
 class GildedRose {
     Item[] items;
+    private final Map<String, ItemUpdater> itemUpdaters;
 
     public GildedRose(Item[] items) {
         this.items = items;
+        this.itemUpdaters = new HashMap<>();
+        initializeItemUpdaters();
+    }
+
+    private void initializeItemUpdaters() {
+        itemUpdaters.put("Sulfuras, Hand of Ragnaros", new LegendaryItemUpdater());
+        itemUpdaters.put("Aged Brie", new AgedBrieUpdater());
+        itemUpdaters.put("Backstage passes to a TAFKAL80ETC concert", new BackstagePassUpdater());
+        itemUpdaters.put("default", new RegularItemUpdater());
     }
 
     public void updateQuality() {
         for (Item item : items) {
-            if (isLegendary(item)) {
-                continue;
-            }
-            if (isAgedBrie(item)) {
-                updateAgedBrie(item);
-                continue;
-            }
-            if (isBackstagePass(item)) {
-                updateBackstagePass(item);
-                continue;
-            }
-            updateRegularItem(item);
+            ItemUpdater updater = itemUpdaters.getOrDefault(item.name, itemUpdaters.get("default"));
+            updater.update(item);
         }
     }
+}
 
-    private boolean isLegendary(Item item) {
-        return item.name.equals("Sulfuras, Hand of Ragnaros");
+interface ItemUpdater {
+    void update(Item item);
+}
+
+class LegendaryItemUpdater implements ItemUpdater {
+    @Override
+    public void update(Item item) {
+        // Legendary items do not change
     }
+}
 
-    private boolean isAgedBrie(Item item) {
-        return item.name.equals("Aged Brie");
-    }
-
-    private boolean isBackstagePass(Item item) {
-        return item.name.equals("Backstage passes to a TAFKAL80ETC concert");
-    }
-
-    private void updateAgedBrie(Item item) {
-        if (item.quality.getValue() < 50) {
-            item.quality.increase();
-        }
+class AgedBrieUpdater implements ItemUpdater {
+    @Override
+    public void update(Item item) {
+        item.quality.increase();
         item.sellIn.decrease();
-        if (item.sellIn.isExpired() && item.quality.getValue() < 50) {
+        if (item.sellIn.isExpired()) {
             item.quality.increase();
         }
     }
+}
 
-    private void updateBackstagePass(Item item) {
-        if (item.quality.getValue() < 50) {
+class BackstagePassUpdater implements ItemUpdater {
+    @Override
+    public void update(Item item) {
+        item.quality.increase();
+        if (item.sellIn.isLessThan(11)) {
             item.quality.increase();
-            if (item.sellIn.isLessThan(11) && item.quality.getValue() < 50) {
-                item.quality.increase();
-            }
-            if (item.sellIn.isLessThan(6) && item.quality.getValue() < 50) {
-                item.quality.increase();
-            }
+        }
+        if (item.sellIn.isLessThan(6)) {
+            item.quality.increase();
         }
         item.sellIn.decrease();
         if (item.sellIn.isExpired()) {
             item.quality.reset();
         }
     }
+}
 
-    private void updateRegularItem(Item item) {
-        if (item.quality.getValue() > 0) {
-            item.quality.decrease();
-        }
+class RegularItemUpdater implements ItemUpdater {
+    @Override
+    public void update(Item item) {
+        item.quality.decrease();
         item.sellIn.decrease();
-        if (item.sellIn.isExpired() && item.quality.getValue() > 0) {
+        if (item.sellIn.isExpired()) {
             item.quality.decrease();
         }
     }
