@@ -22,10 +22,14 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            String itemName = item.name.toString();
+            String itemName = item.getNameString();
             ItemUpdater updater = itemUpdaters.getOrDefault(itemName, itemUpdaters.get("default"));
             updater.update(item);
         }
+    }
+
+    public Item[] getItems() {
+        return items.clone();
     }
 }
 
@@ -43,15 +47,10 @@ class LegendaryItemUpdater implements ItemUpdater {
 class AgedBrieUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        ItemData data = item.itemData;
-        SellIn sellIn = data.sellIn;
-        Quality quality = data.quality;
-
-        sellIn.decrease();
-        quality.increase();
-
-        if (sellIn.isExpired()) {
-            quality.increase();
+        item.decreaseSellIn();
+        item.increaseQuality();
+        if (item.isExpired()) {
+            item.increaseQuality();
         }
     }
 }
@@ -59,23 +58,19 @@ class AgedBrieUpdater implements ItemUpdater {
 class BackstagePassUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        ItemData data = item.itemData;
-        SellIn sellIn = data.sellIn;
-        Quality quality = data.quality;
+        item.decreaseSellIn();
+        item.increaseQuality();
 
-        sellIn.decrease();
-        quality.increase();
-
-        if (sellIn.isLessThan(10)) {
-            quality.increase();
+        if (item.sellInLessThan(10)) {
+            item.increaseQuality();
         }
 
-        if (sellIn.isLessThan(5)) {
-            quality.increase();
+        if (item.sellInLessThan(5)) {
+            item.increaseQuality();
         }
 
-        if (sellIn.isExpired()) {
-            quality.reset();
+        if (item.isExpired()) {
+            item.resetQuality();
         }
     }
 }
@@ -83,15 +78,11 @@ class BackstagePassUpdater implements ItemUpdater {
 class RegularItemUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        ItemData data = item.itemData;
-        SellIn sellIn = data.sellIn;
-        Quality quality = data.quality;
+        item.decreaseSellIn();
+        item.decreaseQuality();
 
-        sellIn.decrease();
-        quality.decrease();
-
-        if (sellIn.isExpired()) {
-            quality.decrease();
+        if (item.isExpired()) {
+            item.decreaseQuality();
         }
     }
 }

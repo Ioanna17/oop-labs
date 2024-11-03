@@ -1,6 +1,6 @@
 package com.gildedrose;
 
-public class SellIn {
+class SellIn {
     private int value;
 
     public SellIn(int value) {
