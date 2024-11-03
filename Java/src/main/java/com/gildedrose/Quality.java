@@ -9,6 +9,10 @@ public class Quality {
         this.value = Math.min(value, MAX_QUALITY);
     }
 
+    public int getValue() {
+        return value;
+    }
+
     public void increase() {
         if (value < MAX_QUALITY) {
             value++;
