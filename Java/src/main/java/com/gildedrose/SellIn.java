@@ -23,4 +23,8 @@ public class SellIn {
         return value < days;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }
