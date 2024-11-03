@@ -43,10 +43,10 @@ class LegendaryItemUpdater implements ItemUpdater {
 class AgedBrieUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.sellIn.decrease();
-        item.quality.increase();
-        if (item.sellIn.isExpired()) {
-            item.quality.increase();
+        item.itemData.sellIn.decrease();
+        item.itemData.quality.increase();
+        if (item.itemData.sellIn.isExpired()) {
+            item.itemData.quality.increase();
         }
     }
 }
@@ -54,16 +54,16 @@ class AgedBrieUpdater implements ItemUpdater {
 class BackstagePassUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.sellIn.decrease();
-        item.quality.increase();
-        if (item.sellIn.isLessThan(10)) {
-            item.quality.increase();
+        item.itemData.sellIn.decrease();
+        item.itemData.quality.increase();
+        if (item.itemData.sellIn.isLessThan(10)) {
+            item.itemData.quality.increase();
         }
-        if (item.sellIn.isLessThan(5)) {
-            item.quality.increase();
+        if (item.itemData.sellIn.isLessThan(5)) {
+            item.itemData.quality.increase();
         }
-        if (item.sellIn.isExpired()) {
-            item.quality.reset();
+        if (item.itemData.sellIn.isExpired()) {
+            item.itemData.quality.reset();
         }
     }
 }
@@ -71,10 +71,10 @@ class BackstagePassUpdater implements ItemUpdater {
 class RegularItemUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.sellIn.decrease();
-        item.quality.decrease();
-        if (item.sellIn.isExpired()) {
-            item.quality.decrease();
+        item.itemData.sellIn.decrease();
+        item.itemData.quality.decrease();
+        if (item.itemData.sellIn.isExpired()) {
+            item.itemData.quality.decrease();
         }
     }
 }
