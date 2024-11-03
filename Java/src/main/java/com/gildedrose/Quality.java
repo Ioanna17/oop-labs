@@ -25,4 +25,9 @@ public class Quality {
         }
     }
 
+    public void reset() {
+        value = MIN_QUALITY;
+    }
+
+
 }
