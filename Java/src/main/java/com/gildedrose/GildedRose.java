@@ -43,10 +43,15 @@ class LegendaryItemUpdater implements ItemUpdater {
 class AgedBrieUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.itemData.sellIn.decrease();
-        item.itemData.quality.increase();
-        if (item.itemData.sellIn.isExpired()) {
-            item.itemData.quality.increase();
+        ItemData data = item.itemData;
+        SellIn sellIn = data.sellIn;
+        Quality quality = data.quality;
+
+        sellIn.decrease();
+        quality.increase();
+
+        if (sellIn.isExpired()) {
+            quality.increase();
         }
     }
 }
@@ -54,16 +59,23 @@ class AgedBrieUpdater implements ItemUpdater {
 class BackstagePassUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.itemData.sellIn.decrease();
-        item.itemData.quality.increase();
-        if (item.itemData.sellIn.isLessThan(10)) {
-            item.itemData.quality.increase();
+        ItemData data = item.itemData;
+        SellIn sellIn = data.sellIn;
+        Quality quality = data.quality;
+
+        sellIn.decrease();
+        quality.increase();
+
+        if (sellIn.isLessThan(10)) {
+            quality.increase();
         }
-        if (item.itemData.sellIn.isLessThan(5)) {
-            item.itemData.quality.increase();
+
+        if (sellIn.isLessThan(5)) {
+            quality.increase();
         }
-        if (item.itemData.sellIn.isExpired()) {
-            item.itemData.quality.reset();
+
+        if (sellIn.isExpired()) {
+            quality.reset();
         }
     }
 }
@@ -71,10 +83,15 @@ class BackstagePassUpdater implements ItemUpdater {
 class RegularItemUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.itemData.sellIn.decrease();
-        item.itemData.quality.decrease();
-        if (item.itemData.sellIn.isExpired()) {
-            item.itemData.quality.decrease();
+        ItemData data = item.itemData;
+        SellIn sellIn = data.sellIn;
+        Quality quality = data.quality;
+
+        sellIn.decrease();
+        quality.decrease();
+
+        if (sellIn.isExpired()) {
+            quality.decrease();
         }
     }
 }
