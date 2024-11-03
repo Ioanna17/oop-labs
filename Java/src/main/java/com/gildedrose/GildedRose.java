@@ -22,8 +22,8 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            ItemUpdater defaultUpdater = itemUpdaters.get("default");
-            ItemUpdater updater = itemUpdaters.getOrDefault(item.name, defaultUpdater);
+            String itemName = item.name.toString();
+            ItemUpdater updater = itemUpdaters.getOrDefault(itemName, itemUpdaters.get("default"));
             updater.update(item);
         }
     }
@@ -43,8 +43,8 @@ class LegendaryItemUpdater implements ItemUpdater {
 class AgedBrieUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.quality.increase();
         item.sellIn.decrease();
+        item.quality.increase();
         if (item.sellIn.isExpired()) {
             item.quality.increase();
         }
@@ -54,14 +54,14 @@ class AgedBrieUpdater implements ItemUpdater {
 class BackstagePassUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.quality.increase();
-        if (item.sellIn.isLessThan(11)) {
-            item.quality.increase();
-        }
-        if (item.sellIn.isLessThan(6)) {
-            item.quality.increase();
-        }
         item.sellIn.decrease();
+        item.quality.increase();
+        if (item.sellIn.isLessThan(10)) {
+            item.quality.increase();
+        }
+        if (item.sellIn.isLessThan(5)) {
+            item.quality.increase();
+        }
         if (item.sellIn.isExpired()) {
             item.quality.reset();
         }
@@ -71,8 +71,8 @@ class BackstagePassUpdater implements ItemUpdater {
 class RegularItemUpdater implements ItemUpdater {
     @Override
     public void update(Item item) {
-        item.quality.decrease();
         item.sellIn.decrease();
+        item.quality.decrease();
         if (item.sellIn.isExpired()) {
             item.quality.decrease();
         }
