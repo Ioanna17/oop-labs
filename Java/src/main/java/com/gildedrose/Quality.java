@@ -9,18 +9,22 @@ public class Quality {
         this.value = Math.min(value, MAX_QUALITY);
     }
 
-    public int getValue() {
-        return value;
+    public boolean isMax() {
+        return value >= MAX_QUALITY;
+    }
+
+    public boolean isMin() {
+        return value <= MIN_QUALITY;
     }
 
     public void increase() {
-        if (value < MAX_QUALITY) {
+        if (!isMax()) {
             value++;
         }
     }
 
     public void decrease() {
-        if (value > MIN_QUALITY) {
+        if (!isMin()) {
             value--;
         }
     }
