@@ -10,4 +10,8 @@ public class SellIn {
     public int getValue() {
         return value;
     }
+
+    public void decrease() {
+        value--;
+    }
 }
