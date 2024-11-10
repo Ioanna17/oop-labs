@@ -62,5 +62,13 @@ public class InventoryItem {
             decreaseQuality(item);
         }
     }
+
+    public void dailyUpdate(Item item) {
+        updateQualityItem(item);
+        updeteExperation(item);
+        if (isExpired(item)) {
+        processExpired(item);
+        }
+    }
 }
 
