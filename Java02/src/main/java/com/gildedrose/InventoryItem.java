@@ -35,23 +35,19 @@ public class InventoryItem {
     }
 
     protected void updateQualityItem() {
-        if (item.name.equals(getAgedBrie)){
+    if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")){
+        increaseQuality();
+        if (item.sellIn < 11) {
             increaseQuality();
         }
-        else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")){
+
+        if (item.sellIn < 6) {
             increaseQuality();
-            if (item.sellIn < 11) {
-                increaseQuality();
-            }
-
-            if (item.sellIn < 6) {
-                increaseQuality();
-            }
-        } else if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
-                return;
         }
-        else decreaseQuality();
-
+    } else if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
+        return;
+    }
+    else decreaseQuality();
     }
 
     private static final String getAgedBrie ="Aged Brie";
@@ -61,15 +57,13 @@ public class InventoryItem {
     }
 
     protected void processExpired() {
-        if (item.name.equals(getAgedBrie)) {
-            increaseQuality();
-        } else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-            item.quality = 0;
-        } else if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-            return;
-        } else {
-            decreaseQuality();
-        }
+    if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+        item.quality = 0;
+    } else if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
+        return;
+    } else {
+        decreaseQuality();
+    }
     }
 
     public void dailyUpdate() {
