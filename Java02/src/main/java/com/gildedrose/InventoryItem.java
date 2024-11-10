@@ -4,24 +4,18 @@ public class InventoryItem {
 
     protected Item item;
 
-    private static final String getBackstagePasses = "Backstage passes to a TAFKAL80ETC concert";
-
-    private static final String getAgedBrie = "Aged Brie";
-
-    private static final String getSulfuras = "Sulfuras, Hand of Ragnaros";
-
     public InventoryItem(Item item){
         this.item=item;
     }
 
     public static InventoryItem create(Item item) {
-        if (item.name.equals(getAgedBrie)){
+        if (item.name.equals(AgedBrie.NAME)){
             return new AgedBrie(item);
         }
-        if (item.name.equals(getBackstagePasses)){
+        if (item.name.equals(BackstagePasses.NAME)){
             return new BackstagePasses(item);
         }
-        if (item.name.equals(getSulfuras)){
+        if (item.name.equals(Sulfuras.NAME)){
             return new Sulfuras(item);
         }
         return new InventoryItem(item);
@@ -29,13 +23,13 @@ public class InventoryItem {
 
     protected void increaseQuality() {
         if (item.quality < 50) {
-            item.quality = item.quality + 1;
+            item.quality++;
         }
     }
 
     protected void decreaseQuality() {
         if (item.quality > 0) {
-            item.quality = item.quality - 1;
+            item.quality--;
         }
     }
 
