@@ -10,16 +10,7 @@ class GildedRose {
     public void updateQuality() {
         for (Item item : items) {
             InventoryItem InventoryItem = new InventoryItem(item);
-            updateItem(item, InventoryItem);
+            InventoryItem.dailyUpdate(item);
         }
     }
-
-    private void updateItem(Item item, InventoryItem inventoryItem) {
-        inventoryItem.updateQualityItem(item);
-        inventoryItem.updeteExperation(item);
-        if (inventoryItem.isExpired(item)) {
-        inventoryItem.processExpired(item);
-        }
-    }
-
 }
