@@ -8,6 +8,8 @@ public class InventoryItem {
 
     private static final String getAgedBrie = "Aged Brie";
 
+    private static final String getSulfuras = "Sulfuras, Hand of Ragnaros";
+
     public InventoryItem(Item item){
         this.item=item;
     }
@@ -18,6 +20,9 @@ public class InventoryItem {
         }
         if (item.name.equals(getBackstagePasses)){
             return new BackstagePasses(item);
+        }
+        if (item.name.equals(getSulfuras)){
+            return new Sulfuras(item);
         }
         return new InventoryItem(item);
     }
@@ -35,17 +40,11 @@ public class InventoryItem {
     }
 
     protected void updeteExperation(){
-        if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-            return;
-        }
         item.sellIn--;
     }
 
     protected void updateQualityItem() {
-    if (item.name.equals("Sulfuras, Hand of Ragnaros")) {
-        return;
-    }
-    else decreaseQuality();
+    decreaseQuality();
     }
 
     protected boolean isExpired() {
@@ -53,11 +52,7 @@ public class InventoryItem {
     }
 
     protected void processExpired() {
-    if (!item.name.equals("Sulfuras, Hand of Ragnaros")) {
-        return;
-    } else {
-        decreaseQuality();
-    }
+    decreaseQuality();
     }
 
     public void dailyUpdate() {
