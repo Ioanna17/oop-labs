@@ -9,6 +9,9 @@ public class InventoryItem {
     }
 
     public static InventoryItem create(Item item) {
+        if (item.name.equals(getAgedBrie)){
+            return new AgedBrie(item);
+        }
         return new InventoryItem(item);
     }
 
@@ -32,7 +35,7 @@ public class InventoryItem {
     }
 
     protected void updateQualityItem() {
-        if (item.name.equals("Aged Brie")){
+        if (item.name.equals(getAgedBrie)){
             increaseQuality();
         }
         else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")){
@@ -51,12 +54,14 @@ public class InventoryItem {
 
     }
 
+    private static final String getAgedBrie ="Aged Brie";
+
     protected boolean isExpired() {
         return item.sellIn < 0;
     }
 
     protected void processExpired() {
-        if (item.name.equals("Aged Brie")) {
+        if (item.name.equals(getAgedBrie)) {
             increaseQuality();
         } else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
             item.quality = 0;
