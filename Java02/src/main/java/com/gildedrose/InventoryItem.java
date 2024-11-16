@@ -22,19 +22,19 @@ public class InventoryItem {
     }
 
     protected void increaseQuality() {
-        if (item.quality < 50) {
-            item.quality++;
+        if (item.getQuality() < 50) {
+            item.setQuality(item.getQuality() + 1);
         }
     }
 
     protected void decreaseQuality() {
-        if (item.quality > 0) {
-            item.quality--;
+        if (item.getQuality() > 0) {
+            item.setQuality(item.getQuality() - 1);
         }
     }
 
     protected void updeteExperation(){
-        item.sellIn--;
+        item.setSellIn(item.getSellIn() - 1);
     }
 
     protected void updateQualityItem() {
@@ -42,7 +42,7 @@ public class InventoryItem {
     }
 
     protected boolean isExpired() {
-        return item.sellIn < 0;
+        return item.getSellIn() < 0;
     }
 
     protected void processExpired() {
