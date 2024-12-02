@@ -9,9 +9,13 @@ class FinancialInstrumentFactoryTest {
     @BeforeEach
     void setUp() {
         factory = new FinancialInstrumentFactory();
+
         factory.registerPrototype("stock", new Stock("AAPL", 150.0, "Technology", 1.5, "Medium"));
         factory.registerPrototype("bond", new Bond("Government", 1000.0, "2030-12-31", 2.5, "AAA"));
         factory.registerPrototype("derivative", new Derivative("Gold", "Futures", "2025-06-30", 10.0));
+        factory.registerPrototype("stock-tech", new Stock("MSFT", 320.0, "Technology", 1.8, "Low"));
+        factory.registerPrototype("bond-corporate", new Bond("Tesla Inc.", 2000.0, "2028-05-15", 3.0, "BB"));
+        factory.registerPrototype("derivative-option", new Derivative("Oil", "Option", "2024-12-31", 5.0));
     }
 
     @Test
@@ -36,6 +40,20 @@ class FinancialInstrumentFactoryTest {
     }
 
     @Test
+    void testCreateStockTech() {
+        FinancialInstrument stockTech = factory.createInstrument("stock-tech");
+        assertNotNull(stockTech, "Stock-tech should not be null");
+        assertTrue(stockTech instanceof Stock, "Created instrument should be an instance of Stock");
+    }
+
+    @Test
+    void testCreateBondCorporate() {
+        FinancialInstrument bondCorporate = factory.createInstrument("bond-corporate");
+        assertNotNull(bondCorporate, "Bond-corporate should not be null");
+        assertTrue(bondCorporate instanceof Bond, "Created instrument should be an instance of Bond");
+    }
+
+    @Test
     void testUnregisteredPrototype() {
         Exception exception = assertThrows(
                 IllegalArgumentException.class,
@@ -49,6 +67,15 @@ class FinancialInstrumentFactoryTest {
         FinancialInstrument stock1 = factory.createInstrument("stock");
         FinancialInstrument stock2 = factory.createInstrument("stock");
         assertNotSame(stock1, stock2, "Each created instrument should be a new instance");
+    }
+
+    @Test
+    void testPrototypeCloning() {
+        FinancialInstrument stock1 = factory.createInstrument("stock");
+        FinancialInstrument stock2 = factory.createInstrument("stock");
+
+        assertNotSame(stock1, stock2, "Each created instrument should be a new instance");
+        assertEquals(stock1.clone().getClass(), stock2.getClass(), "Cloned instruments should have the same type");
     }
 
     @Test
@@ -96,5 +123,20 @@ class FinancialInstrumentFactoryTest {
             assertEquals(original.getExpirationDate(), clone.getExpirationDate());
             assertEquals(original.getLeverage(), clone.getLeverage(), 0.001);
         }
+    }
+
+    @Test
+    void testRegisterDuplicatePrototype() {
+        factory.registerPrototype("stock", new Stock("GOOGL", 2800.0, "Technology", 0.5, "High"));
+        FinancialInstrument stock = factory.createInstrument("stock");
+        assertTrue(stock instanceof Stock);
+        assertEquals("GOOGL", ((Stock) stock).getSymbol());
+    }
+
+    @Test
+    void testDisplayDetailsOutput() {
+        FinancialInstrument stock = factory.createInstrument("stock");
+        assertNotNull(stock);
+        stock.displayDetails(); // Додати логіку перевірки виводу через перехоплення потоку, якщо це критично.
     }
 }
