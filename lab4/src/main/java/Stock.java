@@ -42,4 +42,18 @@ public class Stock extends BaseInstrument {
         simulatePriceChange();
         payDividend();
     }
+
+    @Override
+    public void reactToMarketEvent(String event, int year) {
+        if (event.equals("recession")) {
+            value *= 0.9; // 10% decrease
+        } else if (event.equals("bullMarket")) {
+            value *= 1.1; // 10% increase
+        }
+    }
+
+//    public void performStockSplit(int splitRatio) {
+//        value /= splitRatio;
+//        System.out.println("Stock " + name + " split " + splitRatio + "-for-1. New price: " + value);
+//    }
 }

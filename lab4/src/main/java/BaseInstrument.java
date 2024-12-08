@@ -28,4 +28,6 @@ public abstract class BaseInstrument implements FinancialInstrument {
 
     @Override
     public abstract void performOperation(int year);
-}
+
+    @Override
+    public abstract void reactToMarketEvent(String event, int year);}

@@ -3,4 +3,5 @@ public interface FinancialInstrument extends Cloneable {
     double getValue();
     FinancialInstrument clone();
     void performOperation(int year);
+    void reactToMarketEvent(String event, int year);
 }
