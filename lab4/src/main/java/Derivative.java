@@ -12,7 +12,8 @@ public class Derivative extends BaseInstrument {
     }
 
     @Override
-    public void performOperation() {
+    public void performOperation(int year) {
         calculateValue();
+        System.out.println("Year: " + year);
     }
 }

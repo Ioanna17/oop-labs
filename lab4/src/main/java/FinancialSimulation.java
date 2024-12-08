@@ -1,19 +1,16 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class FinancialSimulation {
     private static List<FinancialInstrument> portfolio = new ArrayList<>();
     private static InstrumentManager manager = new InstrumentManager();
     private static String marketTrend = "neutral"; // Стан ринку: "bullish", "bearish", "neutral"
+    private static int year = 2024; // Початковий рік
 
     public static void main(String[] args) {
-        // Ініціалізація прототипів
         manager.addPrototype("stock", new Stock("Default Stock", 100.0, 0.02));
         manager.addPrototype("bond", new Bond("Default Bond", 1000.0, 0.05));
         manager.addPrototype("derivative", new Derivative("Default Derivative", 0.0, new Stock("Tesla", 200.0, 0.03)));
 
-        // Інтерактивне меню
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
@@ -29,7 +26,7 @@ public class FinancialSimulation {
             int choice = scanner.nextInt();
 
             switch (choice) {
-                case 1 -> addStock(scanner);
+                case 1 -> addStock();
                 case 2 -> addBond(scanner);
                 case 3 -> addDerivative(scanner);
                 case 4 -> simulateNextYear();
@@ -41,73 +38,82 @@ public class FinancialSimulation {
         scanner.close();
     }
 
-    private static void addStock(Scanner scanner) {
-        System.out.print("Введіть назву акції: ");
-        String name = scanner.next();
-        System.out.print("Введіть початкову вартість: ");
-        double value = scanner.nextDouble();
-        System.out.print("Введіть дивідендну дохідність (у %): ");
-        double dividendYield = scanner.nextDouble() / 100;
+    private static void addStock() {
+        Scanner scanner = new Scanner(System.in);
 
-        FinancialInstrument stock = new Stock(name, value, dividendYield);
+        System.out.println("Введіть назву акції:");
+        String name = scanner.nextLine();
+
+        System.out.println("Введіть початкову ціну акції:");
+        double value = scanner.nextDouble();
+
+        System.out.println("Введіть дивідендну дохідність (у десятковому вигляді, наприклад, 0.05):");
+        double dividendYield = scanner.nextDouble();
+
+        Stock stock = new Stock(name, value, dividendYield);
         portfolio.add(stock);
-        System.out.println("Акція успішно додана до портфеля.");
+
+        System.out.println("Акція успішно додана до портфеля!");
     }
 
     private static void addBond(Scanner scanner) {
+        System.out.println("\n--- Додавання нових облігацій ---");
         System.out.print("Введіть назву облігації: ");
         String name = scanner.next();
-        System.out.print("Введіть номінальну вартість: ");
+        System.out.print("Введіть номінальну вартість облігації: ");
         double value = scanner.nextDouble();
-        System.out.print("Введіть річну процентну ставку (у %): ");
-        double annualRate = scanner.nextDouble() / 100;
+        System.out.print("Введіть процентну ставку (наприклад, 0.03 для 3%): ");
+        double interestRate = scanner.nextDouble();
 
-        FinancialInstrument bond = new Bond(name, value, annualRate);
-        portfolio.add(bond);
-        System.out.println("Облігація успішно додана до портфеля.");
+        Bond newBond = new Bond(name, value, interestRate);
+        portfolio.add(newBond);
+        System.out.println("Облігацію " + name + " додано до портфеля!");
     }
 
     private static void addDerivative(Scanner scanner) {
+        System.out.println("\n--- Додавання нового деривативу ---");
         System.out.print("Введіть назву деривативу: ");
         String name = scanner.next();
-        System.out.print("Введіть початкову вартість: ");
+        System.out.print("Введіть вартість деривативу: ");
         double value = scanner.nextDouble();
-        System.out.print("Введіть базову ціну активу: ");
-        double baseValue = scanner.nextDouble();
 
-        FinancialInstrument underlying = new Stock("Базовий актив", baseValue, 0.02);
-        FinancialInstrument derivative = new Derivative(name, value, underlying);
-        portfolio.add(derivative);
-        System.out.println("Дериватив успішно доданий до портфеля.");
+        // Запитуємо, на який базовий актив створюється дериватив
+        System.out.println("Оберіть базовий актив для деривативу:");
+        for (int i = 0; i < portfolio.size(); i++) {
+            System.out.println((i + 1) + ". " + portfolio.get(i).getName() + " | Вартість: $" + portfolio.get(i).getValue());
+        }
+        System.out.print("Введіть номер базового активу: ");
+        int choice = scanner.nextInt();
+
+        if (choice > 0 && choice <= portfolio.size()) {
+            FinancialInstrument underlyingAsset = portfolio.get(choice - 1);
+            Derivative newDerivative = new Derivative(name, value, underlyingAsset);
+            portfolio.add(newDerivative);
+            System.out.println("Дериватив " + name + " додано до портфеля!");
+        } else {
+            System.out.println("Невірний вибір базового активу.");
+        }
     }
 
     private static void simulateNextYear() {
         System.out.println("\n--- Симуляція наступного року ---");
-        // Випадково визначаємо тренд ринку
+        year++; // Increment the year
+        System.out.println("Тепер рік: " + year);
+
         double trend = Math.random();
         marketTrend = trend < 0.4 ? "bearish" : trend > 0.6 ? "bullish" : "neutral";
+        Stock.setMarketTrend(marketTrend);
         System.out.println("Ринок зараз: " + marketTrend);
 
         for (FinancialInstrument instrument : portfolio) {
-            if (instrument instanceof Stock stock) {
-                if (marketTrend.equals("bullish")) {
-                    stock.simulatePriceChange(); // Ціна зростає
-                } else if (marketTrend.equals("bearish")) {
-                    stock.simulatePriceChange(); // Ціна падає
-                }
-                stock.payDividend();
-            } else if (instrument instanceof Bond bond) {
-                bond.performOperation(); // Нарахування річного доходу
-            } else if (instrument instanceof Derivative derivative) {
-                derivative.performOperation(); // Оновлення вартості деривативу
-            }
+            instrument.performOperation(year);
         }
     }
 
     private static void viewPortfolio() {
         System.out.println("\n--- Ваш портфель ---");
         for (FinancialInstrument instrument : portfolio) {
-            System.out.println(instrument.getName() + " | Вартість: " + instrument.getValue());
+            System.out.println(instrument.getName() + " | Вартість: $" + instrument.getValue());
         }
     }
 }

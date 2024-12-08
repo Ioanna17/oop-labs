@@ -12,7 +12,9 @@ public class Bond extends BaseInstrument {
     }
 
     @Override
-    public void performOperation() {
-        calculateAnnualYield();
+    public void performOperation(int year) {
+        double interest = value * annualInterestRate;
+        System.out.println("Year " + year + ": Bond " + name + " pays interest: " + interest);
+        // Optionally, update the bond's value over time
     }
 }

@@ -26,4 +26,6 @@ public abstract class BaseInstrument implements FinancialInstrument {
         return value;
     }
 
+    @Override
+    public abstract void performOperation(int year);
 }
