@@ -1,19 +1,16 @@
 public class Stock extends BaseInstrument {
-    private double dividendYield; // Дивідендна дохідність
-    private static String marketTrend; // Загальний тренд ринку для всіх акцій
+    private double dividendYield;
+    private static String marketTrend;
 
-    // Конструктор для створення акції з назвою, початковою вартістю і дивідендною дохідністю
     public Stock(String name, double value, double dividendYield) {
-        super(name, value); // Викликає конструктор базового класу
-        this.dividendYield = dividendYield; // Ініціалізує дивідендну дохідність
+        super(name, value);
+        this.dividendYield = dividendYield;
     }
 
-    // Метод для встановлення ринкового тренду
     public static void setMarketTrend(String trend) {
         marketTrend = trend;
     }
 
-    // Метод для симуляції зміни ціни акції
     public void simulatePriceChange() {
         double changeFactor;
         switch (marketTrend.toLowerCase()) {
@@ -31,7 +28,6 @@ public class Stock extends BaseInstrument {
         System.out.printf("Ціна акції %s змінена до %.2f (тренд: %s)%n", name, value, marketTrend);
     }
 
-    // Метод для виплати дивідендів
     public void payDividend() {
         double dividend = value * dividendYield;
         System.out.printf("Виплачено дивіденди для %s: %.2f%n", name, dividend);
@@ -46,14 +42,10 @@ public class Stock extends BaseInstrument {
     @Override
     public void reactToMarketEvent(String event, int year) {
         if (event.equals("recession")) {
-            value *= 0.9; // 10% decrease
+            value *= 0.9;
         } else if (event.equals("bullMarket")) {
-            value *= 1.1; // 10% increase
+            value *= 1.1;
         }
     }
 
-//    public void performStockSplit(int splitRatio) {
-//        value /= splitRatio;
-//        System.out.println("Stock " + name + " split " + splitRatio + "-for-1. New price: " + value);
-//    }
 }

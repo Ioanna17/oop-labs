@@ -8,16 +8,10 @@ public class Bond extends BaseInstrument {
         this.maturityYear = maturityYear;
     }
 
-    public void calculateAnnualYield() {
-        double yield = value * annualInterestRate;
-        System.out.println("Річний дохід від облігації: " + yield);
-    }
-
     @Override
     public void performOperation(int year) {
         double interest = value * annualInterestRate;
         System.out.println("Year " + year + ": Bond " + name + " pays interest: " + interest);
-        // Optionally, update the bond's value over time
     }
 
     @Override
@@ -26,7 +20,6 @@ public class Bond extends BaseInstrument {
             value *= 0.95; // 5% decrease
         } else if (event.equals("maturity") && year >= maturityYear) {
             System.out.println("Bond " + name + " has reached maturity. Principal repaid: " + value);
-            // Handle repayment logic
         }
     }
 }

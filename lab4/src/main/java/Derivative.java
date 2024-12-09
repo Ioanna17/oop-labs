@@ -24,7 +24,6 @@ public class Derivative extends BaseInstrument {
         if (event.equals("underlyingPriceIncrease")) {
             value = underlyingAsset.getValue() * 1.1; // Adjust based on underlying asset
         } else if (event.equals("expiration") && year >= expirationYear) {
-            // Handle expiration logic
         }
     }
 }

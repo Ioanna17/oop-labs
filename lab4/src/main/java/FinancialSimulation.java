@@ -49,7 +49,7 @@ public class FinancialSimulation {
         String name = scanner.nextLine();
         System.out.print("Enter stock value: ");
         double value = scanner.nextDouble();
-        System.out.print("Enter dividend yield (e.g., 0.05): ");
+        System.out.print("Enter dividend yield (e.g., 0,05): ");
         double dividendYield = scanner.nextDouble();
 
         Stock stock = new Stock(name, value, dividendYield);
@@ -64,7 +64,7 @@ public class FinancialSimulation {
         String name = scanner.nextLine();
         System.out.print("Enter bond value: ");
         double value = scanner.nextDouble();
-        System.out.print("Enter interest rate (e.g., 0.05): ");
+        System.out.print("Enter interest rate (e.g., 0,05): ");
         double interestRate = scanner.nextDouble();
         System.out.print("Enter bond maturity year: ");
         int maturityYear = scanner.nextInt();
