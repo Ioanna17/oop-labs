@@ -7,10 +7,9 @@ public class FinancialSimulation {
     private static List<FinancialInstrument> portfolio = new ArrayList<>();
     private static InstrumentManager manager = new InstrumentManager();
     private static String marketTrend = "neutral"; // Market trend: "bullish", "bearish", "neutral"
-    private static int year = 2024; // Starting year
+    private static int year = 2024;
 
     public static void main(String[] args) {
-        // Add prototypes for cloning
         manager.addPrototype("stock", new Stock("Default Stock", 100.0, 0.02));
         manager.addPrototype("bond", new Bond("Default Bond", 1000.0, 0.05, 2030));
         manager.addPrototype("derivative", new Derivative("Default Derivative", 0.0, new Stock("Tesla", 200.0, 0.03), 2025));
