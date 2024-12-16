@@ -1,25 +1,33 @@
-public class Bond extends BaseInstrument {
-    private double annualInterestRate;
-    private int maturityYear;
+class Bond extends FinancialInstrument {
+    private double principal;
+    private double annualRate;
 
-    public Bond(String name, double value, double annualInterestRate, int maturityYear) {
-        super(name, value);
-        this.annualInterestRate = annualInterestRate;
-        this.maturityYear = maturityYear;
+    public Bond(String name, double principal, double annualRate) {
+        super(name);
+        this.principal = principal;
+        this.annualRate = annualRate;
     }
 
     @Override
-    public void performOperation(int year) {
-        double interest = value * annualInterestRate;
-        System.out.println("Year " + year + ": Bond " + name + " pays interest: " + interest);
+    public FinancialInstrument clone() {
+        return new Bond(this.getName(), this.principal, this.annualRate);
     }
 
     @Override
-    public void reactToMarketEvent(String event, int year) {
-        if (event.equals("interestRateHike")) {
-            value *= 0.95; // 5% decrease
-        } else if (event.equals("maturity") && year >= maturityYear) {
-            System.out.println("Bond " + name + " has reached maturity. Principal repaid: " + value);
-        }
+    public void simulate() {
+        System.out.println(getName() + "\n==============================");
+        System.out.println("Основна сума: " + principal);
+        System.out.println("Річна ставка: " + String.format("%.2f", annualRate * 100) + "%");
+        double interest = principal * annualRate;
+        System.out.println("Річний дохід: " + String.format("%.2f", interest));
+        System.out.println("==============================\n");
+    }
+
+    @Override
+    public double calculateTax() {
+        double taxRate = 0.05; // 5% податок
+        double tax = principal * annualRate * taxRate;
+        System.out.println("Податок для облігації: " + String.format("%.2f", tax));
+        return tax;
     }
 }

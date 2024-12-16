@@ -1,29 +1,34 @@
-public class Derivative extends BaseInstrument {
-    private FinancialInstrument underlyingAsset;
-    private int expirationYear;
+class Derivative extends FinancialInstrument {
+    private Stock baseAsset;
+    private double strikePrice;
 
-    public Derivative(String name, double value, FinancialInstrument underlyingAsset, int expirationYear) {
-        super(name, value);
-        this.underlyingAsset = underlyingAsset;
-        this.expirationYear = expirationYear;
-    }
-
-    public void calculateValue() {
-        double newValue = underlyingAsset.getValue() * 1.1; // Наприклад, 10% премія
-        System.out.println("Розрахована вартість деривативу: " + newValue);
+    public Derivative(String name, Stock baseAsset, double strikePrice) {
+        super(name);
+        this.baseAsset = baseAsset;
+        this.strikePrice = strikePrice;
     }
 
     @Override
-    public void performOperation(int year) {
-        calculateValue();
-        System.out.println("Year: " + year);
+    public FinancialInstrument clone() {
+        return new Derivative(this.getName(), this.baseAsset, this.strikePrice);
     }
 
     @Override
-    public void reactToMarketEvent(String event, int year) {
-        if (event.equals("underlyingPriceIncrease")) {
-            value = underlyingAsset.getValue() * 1.1; // Adjust based on underlying asset
-        } else if (event.equals("expiration") && year >= expirationYear) {
-        }
+    public void simulate() {
+        System.out.println(getName() + "\n==============================");
+        System.out.println("Ціна базового активу: " + String.format("%.2f", baseAsset.getPrice()));
+        System.out.println("Ціна виконання: " + String.format("%.2f", strikePrice));
+        double profitOrLoss = baseAsset.getPrice() - strikePrice;
+        System.out.println("Прибуток/Збиток: " + String.format("%.2f", profitOrLoss));
+        System.out.println("==============================\n");
+    }
+
+    @Override
+    public double calculateTax() {
+        double profitOrLoss = baseAsset.getPrice() - strikePrice;
+        double taxRate = profitOrLoss > 0 ? 0.2 : 0.0; // 20% податок на прибуток
+        double tax = profitOrLoss * taxRate;
+        System.out.println("Податок для деривативу: " + String.format("%.2f", tax));
+        return tax;
     }
 }

@@ -1,7 +1,17 @@
-public interface FinancialInstrument extends Cloneable {
-    String getName();
-    double getValue();
-    FinancialInstrument clone();
-    void performOperation(int year);
-    void reactToMarketEvent(String event, int year);
+abstract class FinancialInstrument implements Cloneable {
+    private String name;
+
+    public FinancialInstrument(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public abstract FinancialInstrument clone();
+
+    public abstract void simulate();
+
+    public abstract double calculateTax();
 }
