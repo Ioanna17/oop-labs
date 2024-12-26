@@ -1,8 +1,7 @@
 import org.junit.jupiter.api.*;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-class ImageComponentTest {
+class Tests {
     private ImageComponent imageComponent;
     private Icon mockIcon;
 
