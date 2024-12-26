@@ -24,24 +24,35 @@ class Tests {
         verify(newIcon).paintIcon(eq(imageComponent), eq(g), anyInt(), anyInt());
     }
 
-    private ImageComponent imageComponent;
-    private Icon mockIcon;
+    private List<ImageProxy> mediaList;
+    private MediaIterator iterator;
 
     @BeforeEach
     void setUp() {
-        mockIcon = mock(Icon.class);
-        imageComponent = new ImageComponent(mockIcon);
+        mediaList = new ArrayList<>();
+        mediaList.add(new ImageProxy(null)); // Adding dummy ImageProxy with null URL
+        mediaList.add(new ImageProxy(null)); // Adding dummy ImageProxy with null URL
+        iterator = new MediaIterator(mediaList);
     }
 
     @Test
-    void testSetIcon() {
-        Icon newIcon = mock(Icon.class);
-        imageComponent.setIcon(newIcon);
+    void testHasNext() {
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertTrue(iterator.hasNext());
+    }
 
-        Graphics g = mock(Graphics.class);
-        imageComponent.paintComponent(g);
+    @Test
+    void testSetFilterKeyword() {
+        iterator.setFilterKeyword("dummy");
+        assertTrue(iterator.hasNext());
+    }
 
-        verify(newIcon).paintIcon(eq(imageComponent), eq(g), anyInt(), anyInt());
+    @Test
+    void testResetIterator() {
+        iterator.next(); // advance iterator
+        iterator.resetIterator();
+        assertTrue(iterator.hasNext());
     }
 }
 
