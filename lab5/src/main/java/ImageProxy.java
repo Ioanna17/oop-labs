@@ -1,32 +1,69 @@
-import javax.swing.*;
+import java.net.*;
 import java.awt.*;
-import java.net.URL;
+import javax.swing.*;
 
 class ImageProxy implements Icon {
-    private ImageIcon imageIcon;
-    private final URL imageURL;
+	volatile ImageIcon imageIcon;
+	final URL imageURL;
+	Thread retrievalThread;
+	boolean retrieving = false;
+	String name;
 
-    public ImageProxy(URL url) {
-        this.imageURL = url;
-    }
+	public ImageProxy(URL url, String name) {
+		this.imageURL = url;
+		this.name =	name;
+	}
 
-    public int getIconWidth() {
-        return imageIcon != null ? imageIcon.getIconWidth() : 800;
-    }
-
-    public int getIconHeight() {
-        return imageIcon != null ? imageIcon.getIconHeight() : 600;
-    }
-
-    public void setImageIcon(ImageIcon imageIcon) {
-        this.imageIcon = imageIcon;
-    }
-
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        if (imageIcon != null) {
-            imageIcon.paintIcon(c, g, x, y);
+	public int getIconWidth() {
+		if (imageIcon != null) {
+            return imageIcon.getIconWidth();
         } else {
-            g.drawString("Loading image...", x + 300, y + 190);
-        }
-    }
+			return 800;
+		}
+	}
+
+	public int getIconHeight() {
+		if (imageIcon != null) {
+            return imageIcon.getIconHeight();
+        } else {
+			return 600;
+		}
+	}
+
+	synchronized void setImageIcon(ImageIcon imageIcon) {
+		this.imageIcon = imageIcon;
+	}
+
+	public void paintIcon(final Component c, Graphics  g, int x,  int y) {
+		if (imageIcon != null) {
+			imageIcon.paintIcon(c, g, x, y);
+		} else {
+			g.drawString("Loading album cover, please wait...", x+300, y+190);
+			if (!retrieving) {
+				retrieving = true;
+
+				retrievalThread = new Thread(new Runnable() {
+					public void run() {
+						try {
+							setImageIcon(new ImageIcon(imageURL, "Album Cover"));
+							c.repaint();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+				retrievalThread = new Thread(() -> {
+						try {
+							setImageIcon(new ImageIcon(imageURL, "Album Cover"));
+							c.repaint();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+				});
+				retrievalThread.start();
+
+			}
+		}
+	}
 }
