@@ -28,11 +28,9 @@ class Tests {
         Icon newIcon = mock(Icon.class);
         imageComponent.setIcon(newIcon);
 
-        // Create a mock Graphics object to test paintComponent
         Graphics g = mock(Graphics.class);
         imageComponent.paintComponent(g);
 
-        // Verify that the new icon's paintIcon method was called
         verify(newIcon).paintIcon(eq(imageComponent), eq(g), anyInt(), anyInt());
     }
 }
@@ -74,7 +72,7 @@ class MediaIteratorTest {
 
     @Test
     void testResetIterator() {
-        iterator.next(); // advance iterator
+        iterator.next();
         iterator.resetIterator();
         assertTrue(iterator.hasNext());
         assertEquals("Test1", iterator.next().name);
@@ -104,7 +102,6 @@ class ImageProxyTest {
 
         imageProxy.paintIcon(mockComponent, mockGraphics, 0, 0);
 
-        // Verify that loading message is drawn
         verify(mockGraphics).drawString(eq("Loading album cover, please wait..."), anyInt(), anyInt());
     }
 
