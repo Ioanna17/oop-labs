@@ -2,6 +2,9 @@ import org.junit.jupiter.api.*;
 import static org.mockito.Mockito.*;
 import javax.swing.*;
 import java.awt.*;
+import static org.junit.jupiter.api.Assertions.*;
+import java.net.URL;
+import java.util.*;
 
 class Tests {
     private ImageComponent imageComponent;
@@ -53,6 +56,43 @@ class Tests {
         iterator.next(); // advance iterator
         iterator.resetIterator();
         assertTrue(iterator.hasNext());
+    }
+
+    private ImageProxy imageProxy;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        URL testUrl = new URL("http://example.com/test.jpg");
+        imageProxy = new ImageProxy(testUrl);
+    }
+
+    @Test
+    void testDefaultDimensions() {
+        assertEquals(800, imageProxy.getIconWidth());
+        assertEquals(600, imageProxy.getIconHeight());
+    }
+
+    @Test
+    void testPaintIconBeforeLoading() {
+        Graphics mockGraphics = mock(Graphics.class);
+        Component mockComponent = mock(Component.class);
+
+        imageProxy.paintIcon(mockComponent, mockGraphics, 0, 0);
+
+        // Verify that loading message is drawn
+        verify(mockGraphics).drawString(eq("Loading image..."), anyInt(), anyInt());
+    }
+
+    @Test
+    void testSetImageIcon() {
+        ImageIcon mockImageIcon = mock(ImageIcon.class);
+        when(mockImageIcon.getIconWidth()).thenReturn(100);
+        when(mockImageIcon.getIconHeight()).thenReturn(100);
+
+        imageProxy.setImageIcon(mockImageIcon);
+
+        assertEquals(100, imageProxy.getIconWidth());
+        assertEquals(100, imageProxy.getIconHeight());
     }
 }
 
