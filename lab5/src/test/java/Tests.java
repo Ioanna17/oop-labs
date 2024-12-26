@@ -1,18 +1,25 @@
-import org.junit.jupiter.api.*;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import javax.swing.*;
 import java.awt.*;
-import static org.junit.jupiter.api.Assertions.*;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class Tests {
-    private ImageComponent imageComponent;
+    @Mock
     private Icon mockIcon;
+    private ImageComponent imageComponent;
 
     @BeforeEach
     void setUp() {
-        mockIcon = mock(Icon.class);
+        MockitoAnnotations.openMocks(this);
         imageComponent = new ImageComponent(mockIcon);
     }
 
@@ -21,34 +28,48 @@ class Tests {
         Icon newIcon = mock(Icon.class);
         imageComponent.setIcon(newIcon);
 
+        // Create a mock Graphics object to test paintComponent
         Graphics g = mock(Graphics.class);
         imageComponent.paintComponent(g);
 
+        // Verify that the new icon's paintIcon method was called
         verify(newIcon).paintIcon(eq(imageComponent), eq(g), anyInt(), anyInt());
     }
+}
 
+class MediaIteratorTest {
     private List<ImageProxy> mediaList;
     private MediaIterator iterator;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         mediaList = new ArrayList<>();
-        mediaList.add(new ImageProxy(null)); // Adding dummy ImageProxy with null URL
-        mediaList.add(new ImageProxy(null)); // Adding dummy ImageProxy with null URL
+        mediaList.add(new ImageProxy(new URL("http://example.com/1.jpg"), "Test1"));
+        mediaList.add(new ImageProxy(new URL("http://example.com/2.jpg"), "Test2"));
+        mediaList.add(new ImageProxy(new URL("http://example.com/3.jpg"), "different"));
+
         iterator = new MediaIterator(mediaList);
     }
 
     @Test
-    void testHasNext() {
+    void testHasNextWithNoFilter() {
         assertTrue(iterator.hasNext());
         iterator.next();
         assertTrue(iterator.hasNext());
+        iterator.next();
+        assertTrue(iterator.hasNext());
+        iterator.next();
+        assertFalse(iterator.hasNext());
     }
 
     @Test
-    void testSetFilterKeyword() {
-        iterator.setFilterKeyword("dummy");
+    void testFilterKeyword() {
+        iterator.setFilterKeyword("test");
         assertTrue(iterator.hasNext());
+        assertEquals("Test1", iterator.next().name);
+        assertTrue(iterator.hasNext());
+        assertEquals("Test2", iterator.next().name);
+        assertFalse(iterator.hasNext());
     }
 
     @Test
@@ -56,14 +77,18 @@ class Tests {
         iterator.next(); // advance iterator
         iterator.resetIterator();
         assertTrue(iterator.hasNext());
+        assertEquals("Test1", iterator.next().name);
     }
+}
 
+class ImageProxyTest {
     private ImageProxy imageProxy;
+    private URL testUrl;
 
     @BeforeEach
     void setUp() throws Exception {
-        URL testUrl = new URL("http://example.com/test.jpg");
-        imageProxy = new ImageProxy(testUrl);
+        testUrl = new URL("http://example.com/test.jpg");
+        imageProxy = new ImageProxy(testUrl, "TestImage");
     }
 
     @Test
@@ -80,7 +105,7 @@ class Tests {
         imageProxy.paintIcon(mockComponent, mockGraphics, 0, 0);
 
         // Verify that loading message is drawn
-        verify(mockGraphics).drawString(eq("Loading image..."), anyInt(), anyInt());
+        verify(mockGraphics).drawString(eq("Loading album cover, please wait..."), anyInt(), anyInt());
     }
 
     @Test
@@ -95,5 +120,3 @@ class Tests {
         assertEquals(100, imageProxy.getIconHeight());
     }
 }
-
-
